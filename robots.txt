@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bulkemailvalidator.linkwatch.in/sitemap.xml
