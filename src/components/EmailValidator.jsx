@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:3001/api/email';
+const API_BASE = 'https://bulk-email-validator-backend.onrender.com/api/email';
 
 const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpdate, loading }) => {
   const [emails, setEmails] = useState('');
