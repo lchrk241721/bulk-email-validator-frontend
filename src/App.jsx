@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import EmailValidator from './components/EmailValidator';
 import ResultsTable from './components/ResultsTable';
 import Summary from './components/Summary';
+import logo from './logo/logo192.png'; // Import your logo
 import './App.css';
 
 function App() {
@@ -27,8 +28,13 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>📧 Bulk Email Validator</h1>
-        <p>Validate thousands of email addresses quickly and accurately</p>
+        <div className="logo-title-container">
+          <img src={logo} alt="Bulk Email Validator Logo" className="app-logo" />
+          <div className="title-container">
+              <h1>📧 Bulk Email Validator</h1>
+              <p>Validate thousands of email addresses quickly and accurately</p>
+          </div>
+        </div>
       </header>
 
       <main className="app-main">
