@@ -5,6 +5,7 @@ const API_BASE = 'https://bulk-email-validator-backend.onrender.com/api/email';
 const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpdate, loading }) => {
   const [emails, setEmails] = useState('');
   const [file, setFile] = useState(null);
+  const [enableSMTP, setEnableSMTP] = useState(true);
 
   const handleTextSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +55,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ emails: emailList }),
+        body: JSON.stringify({ emails: emailList,enableSMTP: enableSMTP  }),
       });
 
       if (!response.ok) {
@@ -116,7 +117,9 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
           total: 0,
           valid: 0,
           invalid: 0,
-          validityRate: 0
+          validityRate: 0,
+          roleAccounts: 0,
+          smtpVerified: 0
         }
       });
     }
@@ -158,6 +161,21 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
 
   return (
     <div className="validator-container">
+      <div className="smtp-toggle-section">
+        <label className="toggle-switch">
+          <input
+            type="checkbox"
+            checked={enableSMTP}
+            onChange={(e) => setEnableSMTP(e.target.checked)}
+            disabled={loading}
+          />
+          <span className="toggle-slider"></span>
+        </label>
+        <div className="toggle-label">
+          <strong>Enable SMTP Verification</strong>
+          <small>Checks if mailbox actually exists (slower but more accurate)</small>
+        </div>
+      </div>
       <div className="input-methods">
         {/* Text Area Method */}
         <div className="input-section">

@@ -128,7 +128,27 @@ const Summary = ({ summary }) => {
               </div>
             </div>
           </div>
-
+          {summary.smtpVerified > 0 && (
+            <div className="advanced-stats">
+              <div className="stat-card smtp">
+                <div className="stat-icon">✅</div>
+                <div className="stat-content">
+                  <h3>{summary.smtpVerified}</h3>
+                  <p>SMTP Verified</p>
+                  <small>{((summary.smtpVerified / summary.total) * 100).toFixed(1)}%</small>
+                </div>
+              </div>
+              
+              <div className="stat-card role">
+                <div className="stat-icon">👥</div>
+                <div className="stat-content">
+                  <h3>{summary.roleAccounts}</h3>
+                  <p>Role Accounts</p>
+                  <small>{((summary.roleAccounts / summary.total) * 100).toFixed(1)}%</small>
+                </div>
+              </div>
+            </div>
+          )}
           {/* Invalid Reasons Breakdown */}
           {summary.invalid > 0 && Object.keys(summary.reasons).length > 0 && (
             <div className="reasons-breakdown">
