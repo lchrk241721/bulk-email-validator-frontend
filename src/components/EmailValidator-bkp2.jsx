@@ -63,34 +63,18 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let buffer = '';
 
       while (true) {
         const { done, value } = await reader.read();
-        
-        if (done) {
-          // Process any remaining data in buffer
-          if (buffer.trim()) {
-            processBuffer(buffer);
-          }
-          break;
-        }
+        if (done) break;
 
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        
-        // Keep the last incomplete line in buffer
-        buffer = lines.pop() || '';
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
 
         for (const line of lines) {
           if (line.startsWith('data: ') && line.length > 6) {
             try {
-              const jsonData = line.slice(6); // Remove 'data: ' prefix
-              
-              // Skip empty lines or heartbeat messages
-              if (jsonData.trim() === '') continue;
-              
-              const data = JSON.parse(jsonData);
+              const data = JSON.parse(line.slice(6)); // Remove 'data: ' prefix
               
               if (data.type === 'progress') {
                 onProgressUpdate(data.data);
@@ -101,8 +85,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
                 throw new Error(data.data.error);
               }
             } catch (e) {
-              console.warn('Error parsing SSE data, skipping line:', e.message, 'Line:', line);
-              // Continue processing other lines instead of stopping
+              console.error('Error parsing SSE data:', e);
             }
           }
         }
@@ -119,29 +102,6 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
           validityRate: 0
         }
       });
-    }
-  };
-
-  // Helper function to process buffer
-  const processBuffer = (buffer) => {
-    const lines = buffer.split('\n');
-    for (const line of lines) {
-      if (line.startsWith('data: ') && line.length > 6) {
-        try {
-          const jsonData = line.slice(6);
-          if (jsonData.trim() === '') continue;
-          
-          const data = JSON.parse(jsonData);
-          
-          if (data.type === 'progress') {
-            onProgressUpdate(data.data);
-          } else if (data.type === 'complete') {
-            onValidationComplete(data.data);
-          }
-        } catch (e) {
-          console.warn('Error processing buffer line:', e.message);
-        }
-      }
     }
   };
 
