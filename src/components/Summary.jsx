@@ -18,7 +18,7 @@ const Summary = ({ summary }) => {
   const total = summary.total || 0;
   const valid = summary.valid || 0;
   const invalid = summary.invalid || 0;
-  const smtpVerified = summary.smtpVerified || 0;
+  //const smtpVerified = summary.smtpVerified || 0;
   const roleAccounts = summary.roleAccounts || 0;
 
   // Prepare data for the chart
@@ -87,7 +87,7 @@ const Summary = ({ summary }) => {
   // Calculate percentages
   const validPercentage = ((summary.valid / summary.total) * 100).toFixed(1);
   const invalidPercentage = ((summary.invalid / summary.total) * 100).toFixed(1);
-  const smtpPercentage = ((summary.smtpVerified / summary.total) * 100).toFixed(1);
+  //const smtpPercentage = ((summary.smtpVerified / summary.total) * 100).toFixed(1);
   const rolePercentage = ((summary.roleAccounts / summary.total) * 100).toFixed(1);
 
   return (
@@ -137,16 +137,7 @@ const Summary = ({ summary }) => {
               </div>
             </div>
           </div>
-            <div className="advanced-stats">
-              <div className="stat-card smtp">
-                <div className="stat-icon">✅</div>
-                <div className="stat-content">
-                  <h3>{smtpVerified.toLocaleString()}</h3>
-                  <p>SMTP Verified</p>
-                  <span className="percentage">{smtpPercentage}%</span>
-                </div>
-              </div>
-              
+            <div className="advanced-stats">             
               <div className="stat-card role">
                 <div className="stat-icon">👥</div>
                 <div className="stat-content">

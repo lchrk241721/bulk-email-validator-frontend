@@ -70,7 +70,6 @@ const ResultsTable = ({ results }) => {
               <th>Syntax</th>
               <th>Domain</th>
               <th>Disposable</th>
-              <th>SMTP</th>
               <th>Role Account</th>
               <th>Reason</th>
               <th>Time (ms)</th>
@@ -93,9 +92,6 @@ const ResultsTable = ({ results }) => {
                 </td>
                 <td className="check-cell">
                   {result.checks.disposable ? '❌' : '✅'}
-                </td>
-                <td className="check-cell">
-                  {result.checks.smtp ? '✅' : result.checks.smtp === undefined ? '⚪' : '❌'}
                 </td>
                 <td className="check-cell">
                   {result.checks.roleAccount ? '👥' : '👤'}

@@ -5,7 +5,21 @@ const API_BASE = 'https://bulk-email-validator-backend.onrender.com/api/email';
 const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpdate, loading }) => {
   const [emails, setEmails] = useState('');
   const [file, setFile] = useState(null);
-  const [enableSMTP, setEnableSMTP] = useState(true);
+
+  // Retry function with exponential backoff
+  const fetchWithRetry = async (url, options, retries = 3, backoff = 300) => {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response;
+    } catch (error) {
+      if (retries === 0) throw error;
+      
+      console.log(`Retrying request... ${retries} attempts left`);
+      await new Promise(resolve => setTimeout(resolve, backoff));
+      return fetchWithRetry(url, options, retries - 1, backoff * 2);
+    }
+  };
 
   const handleTextSubmit = async (e) => {
     e.preventDefault();
@@ -26,15 +40,10 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
     formData.append('file', file);
 
     try {
-      const response = await fetch(`${API_BASE}/upload-csv`, {
+      const response = await fetchWithRetry(`${API_BASE}/upload-csv`, {
         method: 'POST',
         body: formData,
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to upload file');
-      }
 
       const data = await response.json();
       await validateEmailsWithProgress(data.emails);
@@ -47,14 +56,15 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
     onValidationStart();
     
     try {
-      const response = await fetch(`${API_BASE}/validate-bulk-progress`, {
+      // Use cache-busting parameter
+      const timestamp = Date.now();
+      const response = await fetchWithRetry(`${API_BASE}/validate-bulk-progress?t=${timestamp}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          emails: emailList,
-          enableSMTP: enableSMTP 
+          emails: emailList
         }),
       });
 
@@ -104,7 +114,13 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
       }
     } catch (error) {
       console.error('Validation error:', error);
-      alert('Validation error: ' + error.message);
+      
+      if (error.message.includes('QUIC') || error.message.includes('protocol')) {
+        alert('Network connection issue. Please try again in a moment or check your internet connection.');
+      } else {
+        alert('Validation error: ' + error.message);
+      }
+      
       onValidationComplete({
         results: [],
         summary: {
@@ -112,8 +128,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
           valid: 0,
           invalid: 0,
           validityRate: 0,
-          roleAccounts: 0,
-          smtpVerified: 0
+          roleAccounts: 0
         }
       });
     }
@@ -154,20 +169,12 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
 
   return (
     <div className="validator-container">
-      {/* SMTP Toggle Switch */}
-      <div className="smtp-toggle-section">
-        <label className="toggle-switch">
-          <input
-            type="checkbox"
-            checked={enableSMTP}
-            onChange={(e) => setEnableSMTP(e.target.checked)}
-            disabled={loading}
-          />
-          <span className="toggle-slider"></span>
-        </label>
-        <div className="toggle-label">
-          <strong>Enable SMTP Verification</strong>
-          <small>Checks if mailbox actually exists (slower but more accurate)</small>
+      {/* Validation Info */}
+      <div className="validation-info">
+        <div className="info-icon">⚡</div>
+        <div className="info-content">
+          <strong>Fast Email Validation</strong>
+          <small>Checks: Syntax ✓ | Domain MX Records ✓ | Disposable Emails ✓ | Role Accounts ✓</small>
         </div>
       </div>
 
