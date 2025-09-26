@@ -16,6 +16,59 @@
   padding: 0 2rem;
 }
 
+.app-wrapper {
+  min-height: 100vh;
+}
+
+.main-nav {
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  padding: 1rem 0;
+  text-decoration: none;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link:hover {
+  color: #667eea;
+}
+
+.nav-link.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+/* Logo emoji for home page */
+.app-logo-emoji {
+  font-size: 3rem;
+  margin-right: 1rem;
+}
+
+/* Ensure proper spacing with navigation */
+.app-header {
+  margin-top: 0;
+}
+
 .app-logo {
   width: 150px;
   height: 150px;
@@ -37,6 +90,21 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .nav-container {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+  
+  .nav-link {
+    font-size: 1rem;
+    padding: 0.75rem 0;
+  }
+  
+  .app-logo-emoji {
+    font-size: 2rem;
+    margin-right: 0.5rem;
+  }
+  
   .logo-title-container {
     flex-direction: column;
     text-align: center;

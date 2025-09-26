@@ -5,6 +5,7 @@ import Summary from './components/Summary';
 import logo from './logo/logo512.png'; // Import your logo
 import UserInfoBar from './components/UserInfoBar'; // Import the new component
 import ChatBot from './components/ChatBot'; // Import the chatbot
+import MakeIntegration from './components/MakeIntegration';
 import './App.css';
 
 function App() {
@@ -90,6 +91,38 @@ function App() {
         </p>
       </footer>
     </div>
+  );
+};
+
+// Navigation Component
+const Navigation = () => {
+  const location = useLocation();
+  
+  return (
+    <nav className="main-nav">
+      <div className="nav-container">
+        <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
+          🏠 Home
+        </Link>
+        <Link to="/make-integration" className={`nav-link ${location.pathname === '/make-integration' ? 'active' : ''}`}>
+          🔗 Make.com Integration
+        </Link>
+      </div>
+    </nav>
+  );
+};
+// Main App Component with Router
+function App() {
+  return (
+    <Router>
+      <div className="app-wrapper">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/make-integration" element={<MakeIntegration />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
