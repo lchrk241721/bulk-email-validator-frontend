@@ -67,6 +67,11 @@ const ResultsTable = ({ results }) => {
             <tr>
               <th>Email</th>
               <th>Status</th>
+              <th>Syntax</th>
+              <th>Domain</th>
+              <th>Disposable</th>
+              <th>SMTP</th>
+              <th>Role Account</th>
               <th>Reason</th>
               <th>Time (ms)</th>
             </tr>
@@ -74,11 +79,26 @@ const ResultsTable = ({ results }) => {
           <tbody>
             {filteredResults.map((result, index) => (
               <tr key={index} className={result.valid ? 'valid' : 'invalid'}>
-                <td>{result.email}</td>
-                <td>
+                <td className="email-cell">{result.email}</td>
+                <td className="status-cell">
                   <span className={`status-badge ${result.valid ? 'valid' : 'invalid'}`}>
-                    {result.valid ? 'Valid' : 'Invalid'}
+                    {getStatusIcon(result.valid)} {getStatusText(result.valid)}
                   </span>
+                </td>
+                <td className="check-cell">
+                  {result.checks.syntax ? '✅' : '❌'}
+                </td>
+                <td className="check-cell">
+                  {result.checks.domain ? '✅' : '❌'}
+                </td>
+                <td className="check-cell">
+                  {result.checks.disposable ? '❌' : '✅'}
+                </td>
+                <td className="check-cell">
+                  {result.checks.smtp ? '✅' : result.checks.smtp === undefined ? '⚪' : '❌'}
+                </td>
+                <td className="check-cell">
+                  {result.checks.roleAccount ? '👥' : '👤'}
                 </td>
                 <td>{result.reason}</td>
                 <td>{result.validationTime}ms</td>

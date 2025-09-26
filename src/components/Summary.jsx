@@ -80,6 +80,8 @@ const Summary = ({ summary }) => {
   // Calculate percentages
   const validPercentage = ((summary.valid / summary.total) * 100).toFixed(1);
   const invalidPercentage = ((summary.invalid / summary.total) * 100).toFixed(1);
+  const smtpPercentage = ((summary.smtpVerified / summary.total) * 100).toFixed(1);
+  const rolePercentage = ((summary.roleAccounts / summary.total) * 100).toFixed(1);
 
   return (
     <div className="summary">
@@ -135,7 +137,7 @@ const Summary = ({ summary }) => {
                 <div className="stat-content">
                   <h3>{summary.smtpVerified}</h3>
                   <p>SMTP Verified</p>
-                  <small>{((summary.smtpVerified / summary.total) * 100).toFixed(1)}%</small>
+                  <span className="percentage">{smtpPercentage}%</span>
                 </div>
               </div>
               
@@ -144,7 +146,7 @@ const Summary = ({ summary }) => {
                 <div className="stat-content">
                   <h3>{summary.roleAccounts}</h3>
                   <p>Role Accounts</p>
-                  <small>{((summary.roleAccounts / summary.total) * 100).toFixed(1)}%</small>
+                  <span className="percentage">{rolePercentage}%</span>
                 </div>
               </div>
             </div>

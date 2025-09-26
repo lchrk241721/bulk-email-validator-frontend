@@ -664,3 +664,44 @@ input:checked + .toggle-slider:before {
   font-weight: 600;
   margin-left: 0.5rem;
 }
+
+/* Add to your existing CSS */
+.check-cell {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.email-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-badge.valid {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.status-badge.invalid {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+/* SMTP and Role specific stat cards */
+.stat-card.smtp {
+  border-left-color: #3B82F6;
+  background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+}
+
+.stat-card.role {
+  border-left-color: #8B5CF6;
+  background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+}

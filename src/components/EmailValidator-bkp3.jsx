@@ -5,7 +5,7 @@ const API_BASE = 'https://bulk-email-validator-backend.onrender.com/api/email';
 const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpdate, loading }) => {
   const [emails, setEmails] = useState('');
   const [file, setFile] = useState(null);
-  const [enableSMTP, setEnableSMTP] = useState(true);
+  const [enableSMTP, setEnableSMTP] = useState('');
 
   const handleTextSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +26,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
     formData.append('file', file);
 
     try {
+      // First parse the CSV
       const response = await fetch(`${API_BASE}/upload-csv`, {
         method: 'POST',
         body: formData,
@@ -37,6 +38,8 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
       }
 
       const data = await response.json();
+      
+      // Then validate the emails with progress
       await validateEmailsWithProgress(data.emails);
     } catch (error) {
       alert('Error processing file: ' + error.message);
@@ -52,10 +55,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          emails: emailList,
-          enableSMTP: enableSMTP 
-        }),
+        body: JSON.stringify({ emails: emailList,enableSMTP: enableSMTP  }),
       });
 
       if (!response.ok) {
@@ -70,6 +70,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
         const { done, value } = await reader.read();
         
         if (done) {
+          // Process any remaining data in buffer
           if (buffer.trim()) {
             processBuffer(buffer);
           }
@@ -78,12 +79,16 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
+        
+        // Keep the last incomplete line in buffer
         buffer = lines.pop() || '';
 
         for (const line of lines) {
           if (line.startsWith('data: ') && line.length > 6) {
             try {
-              const jsonData = line.slice(6);
+              const jsonData = line.slice(6); // Remove 'data: ' prefix
+              
+              // Skip empty lines or heartbeat messages
               if (jsonData.trim() === '') continue;
               
               const data = JSON.parse(jsonData);
@@ -97,7 +102,8 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
                 throw new Error(data.data.error);
               }
             } catch (e) {
-              console.warn('Error parsing SSE data:', e.message);
+              console.warn('Error parsing SSE data, skipping line:', e.message, 'Line:', line);
+              // Continue processing other lines instead of stopping
             }
           }
         }
@@ -119,6 +125,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
     }
   };
 
+  // Helper function to process buffer
   const processBuffer = (buffer) => {
     const lines = buffer.split('\n');
     for (const line of lines) {
@@ -154,7 +161,6 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
 
   return (
     <div className="validator-container">
-      {/* SMTP Toggle Switch */}
       <div className="smtp-toggle-section">
         <label className="toggle-switch">
           <input
@@ -170,7 +176,6 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
           <small>Checks if mailbox actually exists (slower but more accurate)</small>
         </div>
       </div>
-
       <div className="input-methods">
         {/* Text Area Method */}
         <div className="input-section">
