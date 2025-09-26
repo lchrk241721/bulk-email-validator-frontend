@@ -13,7 +13,20 @@ function App() {
   const [progress, setProgress] = useState(null);
 
   const handleValidationComplete = (validationResults) => {
-    setResults(validationResults);
+    // Ensure summary has all required properties
+  const resultsWithFallback = {
+      ...validationResults,
+      summary: {
+        total: validationResults.summary?.total || 0,
+        valid: validationResults.summary?.valid || 0,
+        invalid: validationResults.summary?.invalid || 0,
+        validityRate: validationResults.summary?.validityRate || 0,
+        roleAccounts: validationResults.summary?.roleAccounts || 0,
+        smtpVerified: validationResults.summary?.smtpVerified || 0,
+        reasons: validationResults.summary?.reasons || {}
+      }
+    };
+    setResults(resultsWithFallback);
     setLoading(false);
     setProgress(null);
   };

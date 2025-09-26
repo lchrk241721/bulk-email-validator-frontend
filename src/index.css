@@ -705,3 +705,53 @@ input:checked + .toggle-slider:before {
   border-left-color: #8B5CF6;
   background: linear-gradient(135deg, #faf5ff, #f3e8ff);
 }
+
+/* Role badge in table */
+.role-badge {
+  background: #FEF3C7;
+  color: #92400E;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  margin-left: 0.3rem;
+  font-weight: 600;
+}
+
+/* Table responsive design */
+.table-container {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #374151;
+}
+
+tr.valid {
+  background: #f0fdf4;
+}
+
+tr.invalid {
+  background: #fef2f2;
+}
+
+tr:hover {
+  background: #f9fafb;
+}

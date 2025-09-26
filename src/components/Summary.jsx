@@ -14,6 +14,13 @@ ChartJS.register(ArcElement, Tooltip, Legend, Title);
 const Summary = ({ summary }) => {
   if (!summary) return null;
 
+  // Safe property access with fallbacks
+  const total = summary.total || 0;
+  const valid = summary.valid || 0;
+  const invalid = summary.invalid || 0;
+  const smtpVerified = summary.smtpVerified || 0;
+  const roleAccounts = summary.roleAccounts || 0;
+
   // Prepare data for the chart
   const chartData = {
     labels: ['Valid Emails', 'Invalid Emails'],
@@ -130,12 +137,11 @@ const Summary = ({ summary }) => {
               </div>
             </div>
           </div>
-          {summary.smtpVerified > 0 && (
             <div className="advanced-stats">
               <div className="stat-card smtp">
                 <div className="stat-icon">✅</div>
                 <div className="stat-content">
-                  <h3>{summary.smtpVerified}</h3>
+                  <h3>{smtpVerified.toLocaleString()}</h3>
                   <p>SMTP Verified</p>
                   <span className="percentage">{smtpPercentage}%</span>
                 </div>
@@ -144,13 +150,12 @@ const Summary = ({ summary }) => {
               <div className="stat-card role">
                 <div className="stat-icon">👥</div>
                 <div className="stat-content">
-                  <h3>{summary.roleAccounts}</h3>
+                  <h3>{roleAccounts.toLocaleString()}</h3>
                   <p>Role Accounts</p>
                   <span className="percentage">{rolePercentage}%</span>
                 </div>
               </div>
             </div>
-          )}
           {/* Invalid Reasons Breakdown */}
           {summary.invalid > 0 && Object.keys(summary.reasons).length > 0 && (
             <div className="reasons-breakdown">

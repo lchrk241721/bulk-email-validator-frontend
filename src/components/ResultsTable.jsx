@@ -82,7 +82,7 @@ const ResultsTable = ({ results }) => {
                 <td className="email-cell">{result.email}</td>
                 <td className="status-cell">
                   <span className={`status-badge ${result.valid ? 'valid' : 'invalid'}`}>
-                    {getStatusIcon(result.valid)} {getStatusText(result.valid)}
+                    {result.valid ? '✅ Valid' : '❌ Invalid'}
                   </span>
                 </td>
                 <td className="check-cell">
