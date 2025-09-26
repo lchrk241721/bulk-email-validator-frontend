@@ -545,3 +545,17 @@ progress {
     padding: 10px;
   }
 }
+
+.app-footer {
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+  background: #f8fafc;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.app-footer small {
+  opacity: 0.8;
+}

@@ -3,6 +3,7 @@ import EmailValidator from './components/EmailValidator';
 import ResultsTable from './components/ResultsTable';
 import Summary from './components/Summary';
 import logo from './logo/logo512.png'; // Import your logo
+import UserInfo from './components/UserInfo'; // Import the new component
 import './App.css';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
       </header>
 
       <main className="app-main">
+        <UserInfo />
         <EmailValidator
           onValidationComplete={handleValidationComplete}
           onValidationStart={handleValidationStart}
@@ -64,6 +66,14 @@ function App() {
           </>
         )}
       </main>
+      <footer className="app-footer">
+        <p>
+          <small>
+            🔒 Your IP address is only used for location detection and is not stored. 
+            We respect your privacy.
+          </small>
+        </p>
+      </footer>
     </div>
   );
 }
