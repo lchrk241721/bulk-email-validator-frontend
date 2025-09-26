@@ -168,7 +168,7 @@ const MakeIntegration = () => {
               <div className="test-buttons">
                 <button 
                   className="test-btn"
-                  onClick={() => window.open('https://bulk-email-validator-backend.onrender.com/api/email/make/webhook', '_blank')}
+                  onClick={() => window.open('https://bulk-email-validator-backend.onrender.com/api/email/make-webhook-test', '_blank')}
                 >
                   Test Connection
                 </button>
