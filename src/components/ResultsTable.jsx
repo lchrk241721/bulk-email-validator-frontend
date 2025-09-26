@@ -67,9 +67,6 @@ const ResultsTable = ({ results }) => {
             <tr>
               <th>Email</th>
               <th>Status</th>
-              <th>Syntax</th>
-              <th>Domain</th>
-              <th>Disposable</th>
               <th>Role Account</th>
               <th>Reason</th>
               <th>Time (ms)</th>
