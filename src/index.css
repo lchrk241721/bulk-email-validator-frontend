@@ -525,6 +525,10 @@ progress {
   .stat-content h3 {
     font-size: 1.25rem;
   }
+
+  .app-main {
+    padding-top: 5rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -544,6 +548,10 @@ progress {
   .app {
     padding: 10px;
   }
+
+  .app-main {
+    padding-top: 4rem;
+  }
 }
 
 .app-footer {
@@ -558,4 +566,12 @@ progress {
 
 .app-footer small {
   opacity: 0.8;
+}
+
+.app-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
 }

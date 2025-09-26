@@ -3,7 +3,8 @@ import EmailValidator from './components/EmailValidator';
 import ResultsTable from './components/ResultsTable';
 import Summary from './components/Summary';
 import logo from './logo/logo512.png'; // Import your logo
-import UserInfo from './components/UserInfo'; // Import the new component
+import UserInfoBar from './components/UserInfoBar'; // Import the new component
+import ChatBot from './components/ChatBot'; // Import the chatbot
 import './App.css';
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
 
   return (
     <div className="app">
+      <UserInfoBar />
+      <ChatBot />
       <header className="app-header">
         <div className="logo-title-container">
           <img src={logo} alt="Bulk Email Validator Logo" className="app-logo" />
@@ -39,7 +42,6 @@ function App() {
       </header>
 
       <main className="app-main">
-        <UserInfo />
         <EmailValidator
           onValidationComplete={handleValidationComplete}
           onValidationStart={handleValidationStart}
