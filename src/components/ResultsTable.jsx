@@ -85,15 +85,6 @@ const ResultsTable = ({ results }) => {
                   </span>
                 </td>
                 <td className="check-cell">
-                  {result.checks.syntax ? '✅' : '❌'}
-                </td>
-                <td className="check-cell">
-                  {result.checks.domain ? '✅' : '❌'}
-                </td>
-                <td className="check-cell">
-                  {result.checks.disposable ? '❌' : '✅'}
-                </td>
-                <td className="check-cell">
                   {result.checks.roleAccount ? '👥' : '👤'}
                 </td>
                 <td>{result.reason}</td>
