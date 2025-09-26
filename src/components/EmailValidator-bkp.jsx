@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const API_BASE = 'https://bulk-email-validator-backend.onrender.com/api/email';
 
@@ -14,7 +15,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
       .map(email => email.trim())
       .filter(email => email.length > 0);
 
-    await validateEmailsWithProgress(emailList);
+    await validateEmails(emailList);
   };
 
   const handleFileUpload = async (e) => {
@@ -26,82 +27,29 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
 
     try {
       // First parse the CSV
-      const response = await fetch(`${API_BASE}/upload-csv`, {
-        method: 'POST',
-        body: formData,
+      const parseResponse = await axios.post(`${API_BASE}/upload-csv`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to upload file');
-      }
-
-      const data = await response.json();
-      
-      // Then validate the emails with progress
-      await validateEmailsWithProgress(data.emails);
+      // Then validate the emails
+      await validateEmails(parseResponse.data.emails);
     } catch (error) {
-      alert('Error processing file: ' + error.message);
+      alert('Error processing file: ' + error.response?.data?.error || error.message);
     }
   };
 
-  const validateEmailsWithProgress = async (emailList) => {
+  const validateEmails = async (emailList) => {
     onValidationStart();
     
     try {
-      const response = await fetch(`${API_BASE}/validate-bulk-progress`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ emails: emailList }),
+      // For real-time progress, we'd use WebSockets, but for simplicity:
+      const response = await axios.post(`${API_BASE}/validate-bulk`, {
+        emails: emailList
       });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
-
-        for (const line of lines) {
-          if (line.startsWith('data: ') && line.length > 6) {
-            try {
-              const data = JSON.parse(line.slice(6)); // Remove 'data: ' prefix
-              
-              if (data.type === 'progress') {
-                onProgressUpdate(data.data);
-              } else if (data.type === 'complete') {
-                onValidationComplete(data.data);
-                return;
-              } else if (data.type === 'error') {
-                throw new Error(data.data.error);
-              }
-            } catch (e) {
-              console.error('Error parsing SSE data:', e);
-            }
-          }
-        }
-      }
+      
+      onValidationComplete(response.data);
     } catch (error) {
-      console.error('Validation error:', error);
-      alert('Validation error: ' + error.message);
-      onValidationComplete({
-        results: [],
-        summary: {
-          total: 0,
-          valid: 0,
-          invalid: 0,
-          validityRate: 0
-        }
-      });
+      alert('Validation error: ' + error.response?.data?.error || error.message);
     }
   };
 
@@ -131,7 +79,7 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
               disabled={loading}
             />
             <button type="submit" disabled={loading || !emails.trim()}>
-              {loading ? 'Validating...' : 'Validate Emails'}
+              Validate Emails
             </button>
           </form>
         </div>
@@ -147,9 +95,9 @@ const EmailValidator = ({ onValidationComplete, onValidationStart, onProgressUpd
               disabled={loading}
             />
             <button type="submit" disabled={loading || !file}>
-              {loading ? 'Validating...' : 'Upload & Validate'}
+              Upload & Validate
             </button>
-            <button type="button" onClick={downloadTemplate} className="secondary" disabled={loading}>
+            <button type="button" onClick={downloadTemplate} className="secondary">
               Download Template
             </button>
           </form>
