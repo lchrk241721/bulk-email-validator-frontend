@@ -16,7 +16,7 @@ const MakeIntegration = () => {
             <div className="card">
               <h3>API Endpoint</h3>
               <div className="code-block">
-                <strong>POST</strong> https://your-domain.com/api/email/make/integration
+                <strong>POST</strong> https://bulk-email-validator-backend.onrender.com/api/email/make/integration
               </div>
             </div>
           </section>
@@ -149,10 +149,10 @@ const MakeIntegration = () => {
             <div className="card">
               <p>Your API key for Make.com integration:</p>
               <div className="api-key-display">
-                <code>make_integration_key_2024</code>
+                <code>make_default_key_123</code>
                 <button 
                   className="copy-btn"
-                  onClick={() => navigator.clipboard.writeText('make_integration_key_2024')}
+                  onClick={() => navigator.clipboard.writeText('make_default_key_123')}
                 >
                   Copy
                 </button>
@@ -168,7 +168,7 @@ const MakeIntegration = () => {
               <div className="test-buttons">
                 <button 
                   className="test-btn"
-                  onClick={() => window.open('https://your-domain.com/api/email/make/webhook', '_blank')}
+                  onClick={() => window.open('https://bulk-email-validator-backend.onrender.com/api/email/make/webhook', '_blank')}
                 >
                   Test Connection
                 </button>
@@ -176,7 +176,7 @@ const MakeIntegration = () => {
                   className="test-btn secondary"
                   onClick={() => {
                     const testData = {
-                      api_key: "make_integration_key_2024",
+                      api_key: "make_default_key_123",
                       emails: ["test@example.com", "invalid-email"],
                       format: "json"
                     };

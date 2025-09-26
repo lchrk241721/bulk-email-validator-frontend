@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import EmailValidator from './components/EmailValidator';
 import ResultsTable from './components/ResultsTable';
 import Summary from './components/Summary';
-import logo from './logo/logo512.png'; // Import your logo
-import UserInfoBar from './components/UserInfoBar'; // Import the new component
-import ChatBot from './components/ChatBot'; // Import the chatbot
+import logo from './logo/logo512.png';
+import UserInfoBar from './components/UserInfoBar';
+import ChatBot from './components/ChatBot';
 import MakeIntegration from './components/MakeIntegration';
 import './App.css';
 
-function App() {
+// Home Component (previously the first App function)
+const Home = () => {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(null);
 
   const handleValidationComplete = (validationResults) => {
-    // Ensure summary has all required properties
-  const resultsWithFallback = {
+    const resultsWithFallback = {
       ...validationResults,
       summary: {
         total: validationResults.summary?.total || 0,
@@ -23,7 +24,7 @@ function App() {
         invalid: validationResults.summary?.invalid || 0,
         validityRate: validationResults.summary?.validityRate || 0,
         roleAccounts: validationResults.summary?.roleAccounts || 0,
-        smtpVerified: validationResults.summary?.smtpVerified || 0,
+        //smtpVerified: validationResults.summary?.smtpVerified || 0,
         reasons: validationResults.summary?.reasons || {}
       }
     };
@@ -49,8 +50,8 @@ function App() {
         <div className="logo-title-container">
           <img src={logo} alt="Bulk Email Validator Logo" className="app-logo" />
           <div className="title-container">
-              <h1>📧 Bulk Email Validator</h1>
-              <p>Validate thousands of email addresses quickly and accurately</p>
+            <h1>📧 Bulk Email Validator</h1>
+            <p>Validate thousands of email addresses quickly and accurately</p>
           </div>
         </div>
       </header>
@@ -111,6 +112,7 @@ const Navigation = () => {
     </nav>
   );
 };
+
 // Main App Component with Router
 function App() {
   return (
