@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import EmailValidator from './components/EmailValidator';
 import ResultsTable from './components/ResultsTable';
 import Summary from './components/Summary';
-import logo from './logo/logo192.png'; // Import your logo
+import logo from './logo/logo512.png'; // Import your logo
 import './App.css';
 
 function App() {
