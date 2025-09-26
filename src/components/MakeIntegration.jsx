@@ -11,7 +11,7 @@ const MakeIntegration = () => {
     setTestResult(null);
     
     try {
-      const response = await fetch('http://localhost:5000/api/email/make/status');
+      const response = await fetch('https://bulk-email-validator-backend.onrender.com/api/email/make/status');
       const data = await response.json();
       
       setTestResult({
@@ -36,7 +36,7 @@ const MakeIntegration = () => {
 
     setIsTesting(true);
     try {
-      const response = await fetch('http://localhost:5000/api/email/make/webhook-test', {
+      const response = await fetch('https://bulk-email-validator-backend.onrender.com/api/email/make/webhook-test', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -132,10 +132,10 @@ const MakeIntegration = () => {
               <div className="card">
                 <div className="endpoint-info">
                   <span className="method">POST</span>
-                  <code>http://localhost:5000/api/email/make/integration</code>
+                  <code>https://bulk-email-validator-backend.onrender.com/api/email/make/integration</code>
                   <button 
                     className="copy-btn small"
-                    onClick={() => copyToClipboard('http://localhost:5000/api/email/make/integration')}
+                    onClick={() => copyToClipboard('https://bulk-email-validator-backend.onrender.com/api/email/make/integration')}
                   >
                     Copy
                   </button>
